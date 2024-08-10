@@ -93,7 +93,15 @@ def show_pokemon(request, pokemon_id):
             'title_en': requested_pokemon.previous_evolution.title_en,
             'title_jp': requested_pokemon.previous_evolution.title_jp
         }
-
+    next_evolution = requested_pokemon.next_evolution.all()
+    if next_evolution:
+        next_evolution = next_evolution[0]
+        next_evolution = {
+            'pokemon_id': next_evolution.id,
+            'img_url': f'http://{request.get_host()}{next_evolution.image.url}',
+            'title_ru': next_evolution.title_ru
+        }
+        pokemon_view['next_evolution'] = next_evolution
     return render(request, 'pokemon.html', context={
         'map': folium_map._repr_html_(), 'pokemon': pokemon_view
     })
