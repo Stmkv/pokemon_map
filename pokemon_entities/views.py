@@ -52,9 +52,7 @@ def show_all_pokemons(request):
         pokemons_on_page.append({
             'pokemon_id': pokemon.id,
             'img_url': get_url(request, pokemon.image.url),
-            'title_ru': pokemon.title_ru,
-            'title_en': pokemon.title_en,
-            'title_jp': pokemon.title_jp,
+            'title_ru': pokemon.title_ru
         })
 
     return render(request, 'mainpage.html', context={
@@ -86,6 +84,16 @@ def show_pokemon(request, pokemon_id):
         'title_jp': requested_pokemon.title_jp,
         "description": requested_pokemon.description,
     }
+
+    if requested_pokemon.previous_evolution:
+        pokemon_view['previous_evolution'] = {
+            'pokemon_id': requested_pokemon.previous_evolution.id,
+            'img_url': f'http://{request.get_host()}{requested_pokemon.previous_evolution.image.url}',
+            'title_ru': requested_pokemon.previous_evolution.title_ru,
+            'title_en': requested_pokemon.previous_evolution.title_en,
+            'title_jp': requested_pokemon.previous_evolution.title_jp
+        }
+
     return render(request, 'pokemon.html', context={
         'map': folium_map._repr_html_(), 'pokemon': pokemon_view
     })
