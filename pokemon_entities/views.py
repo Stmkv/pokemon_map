@@ -1,7 +1,5 @@
 import folium
-import json
 
-from django.http import HttpResponseNotFound
 from django.shortcuts import render
 from django.utils.timezone import localtime
 
@@ -27,8 +25,6 @@ def add_pokemon(folium_map, lat, lon, image_url=DEFAULT_IMAGE_URL):
     )
     folium.Marker(
         [lat, lon],
-        # Warning! `tooltip` attribute is disabled intentionally
-        # to fix strange folium cyrillic encoding bug
         icon=icon,
     ).add_to(folium_map)
 
@@ -37,8 +33,8 @@ def show_all_pokemons(request):
     local_time = localtime()
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
 
-    pokemons = PokemonEntity.objects.filter(disappear_at__gt=local_time, appeared_at__lt=local_time)
-    for pokemon_entity in pokemons:
+    entity = PokemonEntity.objects.filter(disappear_at__gt=local_time, appeared_at__lt=local_time)
+    for pokemon_entity in entity:
         add_pokemon(
             folium_map,
             pokemon_entity.lat,
