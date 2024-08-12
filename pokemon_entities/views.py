@@ -87,7 +87,7 @@ def show_pokemon(request, pokemon_id):
         }
     next_evolution = requested_pokemon.next_evolutions.all()
     if next_evolution:
-        next_evolution = next_evolution[0]
+        next_evolution = next_evolution.first()
         next_evolution = {
             'pokemon_id': next_evolution.id,
             'img_url': request.build_absolute_uri(next_evolution.image.url),
