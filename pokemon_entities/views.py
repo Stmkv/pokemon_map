@@ -1,6 +1,6 @@
 import folium
 
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.utils.timezone import localtime
 
 from pokemon_entities.models import Pokemon, PokemonEntity
@@ -55,7 +55,7 @@ def show_all_pokemons(request):
 
 def show_pokemon(request, pokemon_id):
     local_time = localtime()
-    requested_pokemon = Pokemon.objects.get(id=pokemon_id)
+    requested_pokemon = get_object_or_404(Pokemon, id=pokemon_id)
 
     pokemon_map = PokemonEntity.objects.filter(pokemon=requested_pokemon,
                                                disappear_at__gt=local_time,
